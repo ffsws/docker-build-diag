@@ -15,6 +15,11 @@ RUN ls -l
 # output build env
 RUN env
 
+RUN echo $BUILD
+
+# pretty print of BUILD param
+RUN echo $BUILD | jq .
+
 
 ADD index.txt /tmp/index.txt
 
