@@ -12,7 +12,9 @@ ADD index.html /tmp/index.html
 RUN sed -i "s|BUILD_DIR|$PWD|g" /tmp/index.html && echo "dir: $PWD"
 
 # output dir content
-RUN ls -l
+RUN echo `ls -l` > tmp.txt
+RUN sed -i "s/BUILD_DIR_CONTENT/$(cat tmp.txt)/" /tmp/index.html && ls -l
+RUN rm tmp.txt
 
 # output build env
 RUN env
