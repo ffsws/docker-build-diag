@@ -6,8 +6,10 @@ MAINTAINER Christoph Raaflaub <raaflaub@puzzle.ch>
 RUN yum install -y jq && \
     yum clean all
 
+ADD index.txt /tmp/index.txt
+
 # output build dir
-RUN echo "dir: " `pwd`
+RUN echo "dir: `pwd`" >> /tmp/index.txt && echo "dir: `pwd`"
 
 # output dir content
 RUN ls -l
@@ -19,9 +21,6 @@ RUN echo $BUILD
 
 # pretty print of BUILD param
 RUN echo $BUILD | jq .
-
-
-ADD index.txt /tmp/index.txt
 
 EXPOSE 8080
 
