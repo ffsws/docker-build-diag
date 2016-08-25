@@ -6,10 +6,10 @@ MAINTAINER Christoph Raaflaub <raaflaub@puzzle.ch>
 RUN yum install -y jq && \
     yum clean all
 
-ADD index.txt /tmp/index.txt
+ADD index.html /tmp/index.html
 
 # output build dir
-RUN echo "dir: `pwd`" >> /tmp/index.txt && echo "dir: `pwd`"
+RUN sed -i "s|BUILD_DIR|$PWD|g" /tmp/index.html && echo "dir: $PWD"
 
 # output dir content
 RUN ls -l
