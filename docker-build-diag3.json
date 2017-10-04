@@ -1,0 +1,611 @@
+{
+    "kind": "Template",
+    "apiVersion": "v1",
+    "metadata": {
+        "name": "docker-build-diag",
+        "creationTimestamp": null
+    },
+    "objects": [
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "base-centos7",
+                "generation": 2,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp",
+                    "openshift.io/image.dockerRepositoryCheck": "2016-08-26T06:43:18Z"
+                }
+            },
+            "spec": {
+                "dockerImageRepository": "openshift/base-centos7",
+                "tags": [
+                    {
+                        "name": "latest",
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "openshift/base-centos7:latest"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "dockerImageRepository": ""
+            }
+        },
+        {
+            "kind": "ImageStream",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag",
+                "generation": 1,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "tags": [
+                    {
+                        "name": "latest",
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "172.30.1.1:5000/builder-test/docker-build-diag:latest"
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "dockerImageRepository": ""
+            }
+        },
+        {
+            "kind": "BuildConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "triggers": [
+                    {
+                        "type": "GitHub",
+                        "github": {
+                            "secret": "PaVDWP7-4G6udTbmF8gz"
+                        }
+                    },
+                    {
+                        "type": "Generic",
+                        "generic": {
+                            "secret": "ok3gYVlkp3g2HH6c6F2z"
+                        }
+                    },
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChange": {}
+                    }
+                ],
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/appuio/docker-build-diag.git"
+                    }
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "ImageStreamTag",
+                            "name": "base-centos7:latest"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "docker-build-diag:latest"
+                    }
+                },
+                "resources": {}
+            },
+            "status": {
+                "lastVersion": 0
+            }
+        },
+        {
+            "kind": "Build",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag-1",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag",
+                    "buildconfig": "docker-build-diag",
+                    "openshift.io/build-config.name": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/build-config.name": "docker-build-diag",
+                    "openshift.io/build.number": "1",
+                    "openshift.io/build.pod-name": "docker-build-diag-1-build"
+                }
+            },
+            "spec": {
+                "serviceAccount": "builder",
+                "source": {
+                    "type": "Git",
+                    "git": {
+                        "uri": "https://github.com/appuio/docker-build-diag.git"
+                    }
+                },
+                "revision": {
+                    "type": "Git",
+                    "git": {
+                        "commit": "ef715244a116a40af52fa56d0e4f9ac22ca53999",
+                        "author": {
+                            "name": "Christoph Raaflaub",
+                            "email": "raaflaub@puzzle.ch"
+                        },
+                        "committer": {
+                            "name": "Christoph Raaflaub",
+                            "email": "raaflaub@puzzle.ch"
+                        },
+                        "message": "added build dir content info to index.html"
+                    }
+                },
+                "strategy": {
+                    "type": "Docker",
+                    "dockerStrategy": {
+                        "from": {
+                            "kind": "DockerImage",
+                            "name": "openshift/base-centos7@sha256:7dc18d5ea1ea6ecf7cd8643614b800698b3625f94b5435e77e82757482855943"
+                        }
+                    }
+                },
+                "output": {
+                    "to": {
+                        "kind": "ImageStreamTag",
+                        "name": "docker-build-diag:latest"
+                    },
+                    "pushSecret": {
+                        "name": "builder-dockercfg-gfviv"
+                    }
+                },
+                "resources": {}
+            },
+            "status": {
+                "phase": "New",
+                "outputDockerImageReference": "172.30.1.1:5000/builder-test/docker-build-diag:latest",
+                "config": {
+                    "name": "docker-build-diag"
+                }
+            }
+        },
+        {
+            "kind": "DeploymentConfig",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "strategy": {
+                    "type": "Rolling",
+                    "rollingParams": {
+                        "updatePeriodSeconds": 1,
+                        "intervalSeconds": 1,
+                        "timeoutSeconds": 600,
+                        "maxUnavailable": "25%",
+                        "maxSurge": "25%"
+                    },
+                    "resources": {}
+                },
+                "triggers": [
+                    {
+                        "type": "ConfigChange"
+                    },
+                    {
+                        "type": "ImageChange",
+                        "imageChangeParams": {
+                            "automatic": true,
+                            "containerNames": [
+                                "docker-build-diag"
+                            ],
+                            "from": {
+                                "kind": "ImageStreamTag",
+                                "name": "docker-build-diag:latest"
+                            }
+                        }
+                    }
+                ],
+                "replicas": 1,
+                "selector": {
+                    "app": "docker-build-diag",
+                    "deploymentconfig": "docker-build-diag"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "docker-build-diag",
+                            "deploymentconfig": "docker-build-diag"
+                        },
+                        "annotations": {
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "docker-build-diag",
+                                "image": "172.30.1.1:5000/builder-test/docker-build-diag@sha256:4b76e8096d9aa0871123a6acd7943c1bd818a39583c8c1e0ff2bdc84d3159405",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {}
+        },
+        {
+            "kind": "ReplicationController",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag-1",
+                "generation": 1,
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag",
+                    "openshift.io/deployment-config.name": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/deployer-pod.name": "docker-build-diag-1-deploy",
+                    "openshift.io/deployment-config.latest-version": "1",
+                    "openshift.io/deployment-config.name": "docker-build-diag",
+                    "openshift.io/deployment.phase": "Complete",
+                    "openshift.io/deployment.replicas": "1",
+                    "openshift.io/encoded-deployment-config": "{\"kind\":\"DeploymentConfig\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"docker-build-diag\",\"namespace\":\"builder-test\",\"selfLink\":\"/oapi/v1/namespaces/builder-test/deploymentconfigs/docker-build-diag\",\"uid\":\"5e14575b-6b58-11e6-b8a4-5254008c28c6\",\"resourceVersion\":\"17520\",\"creationTimestamp\":\"2016-08-26T06:43:16Z\",\"labels\":{\"app\":\"docker-build-diag\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftNewApp\"}},\"spec\":{\"strategy\":{\"type\":\"Rolling\",\"rollingParams\":{\"updatePeriodSeconds\":1,\"intervalSeconds\":1,\"timeoutSeconds\":600,\"maxUnavailable\":\"25%\",\"maxSurge\":\"25%\"},\"resources\":{}},\"triggers\":[{\"type\":\"ConfigChange\"},{\"type\":\"ImageChange\",\"imageChangeParams\":{\"automatic\":true,\"containerNames\":[\"docker-build-diag\"],\"from\":{\"kind\":\"ImageStreamTag\",\"name\":\"docker-build-diag:latest\"},\"lastTriggeredImage\":\"172.30.1.1:5000/builder-test/docker-build-diag@sha256:4b76e8096d9aa0871123a6acd7943c1bd818a39583c8c1e0ff2bdc84d3159405\"}}],\"replicas\":1,\"test\":false,\"selector\":{\"app\":\"docker-build-diag\",\"deploymentconfig\":\"docker-build-diag\"},\"template\":{\"metadata\":{\"creationTimestamp\":null,\"labels\":{\"app\":\"docker-build-diag\",\"deploymentconfig\":\"docker-build-diag\"},\"annotations\":{\"openshift.io/generated-by\":\"OpenShiftNewApp\"}},\"spec\":{\"containers\":[{\"name\":\"docker-build-diag\",\"image\":\"172.30.1.1:5000/builder-test/docker-build-diag@sha256:4b76e8096d9aa0871123a6acd7943c1bd818a39583c8c1e0ff2bdc84d3159405\",\"ports\":[{\"containerPort\":8080,\"protocol\":\"TCP\"}],\"resources\":{},\"terminationMessagePath\":\"/dev/termination-log\",\"imagePullPolicy\":\"Always\"}],\"restartPolicy\":\"Always\",\"terminationGracePeriodSeconds\":30,\"dnsPolicy\":\"ClusterFirst\",\"securityContext\":{}}}},\"status\":{\"latestVersion\":1,\"details\":{\"causes\":[{\"type\":\"ImageChange\",\"imageTrigger\":{\"from\":{\"kind\":\"ImageStreamTag\",\"name\":\"docker-build-diag:latest\"}}}]}}}\n"
+                }
+            },
+            "spec": {
+                "replicas": 1,
+                "selector": {
+                    "app": "docker-build-diag",
+                    "deployment": "docker-build-diag-1",
+                    "deploymentconfig": "docker-build-diag"
+                },
+                "template": {
+                    "metadata": {
+                        "creationTimestamp": null,
+                        "labels": {
+                            "app": "docker-build-diag",
+                            "deployment": "docker-build-diag-1",
+                            "deploymentconfig": "docker-build-diag"
+                        },
+                        "annotations": {
+                            "openshift.io/deployment-config.latest-version": "1",
+                            "openshift.io/deployment-config.name": "docker-build-diag",
+                            "openshift.io/deployment.name": "docker-build-diag-1",
+                            "openshift.io/generated-by": "OpenShiftNewApp"
+                        }
+                    },
+                    "spec": {
+                        "containers": [
+                            {
+                                "name": "docker-build-diag",
+                                "image": "172.30.1.1:5000/builder-test/docker-build-diag@sha256:4b76e8096d9aa0871123a6acd7943c1bd818a39583c8c1e0ff2bdc84d3159405",
+                                "ports": [
+                                    {
+                                        "containerPort": 8080,
+                                        "protocol": "TCP"
+                                    }
+                                ],
+                                "resources": {},
+                                "terminationMessagePath": "/dev/termination-log",
+                                "imagePullPolicy": "Always"
+                            }
+                        ],
+                        "restartPolicy": "Always",
+                        "terminationGracePeriodSeconds": 30,
+                        "dnsPolicy": "ClusterFirst",
+                        "securityContext": {}
+                    }
+                }
+            },
+            "status": {
+                "replicas": 0
+            }
+        },
+        {
+            "kind": "Route",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/host.generated": "true"
+                }
+            },
+            "spec": {
+                "host": "docker-build-diag-builder-test.cloudapps.example.com",
+                "to": {
+                    "kind": "Service",
+                    "name": "docker-build-diag"
+                },
+                "port": {
+                    "targetPort": "8080-tcp"
+                }
+            },
+            "status": {}
+        },
+        {
+            "kind": "Service",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag"
+                },
+                "annotations": {
+                    "openshift.io/generated-by": "OpenShiftNewApp"
+                }
+            },
+            "spec": {
+                "ports": [
+                    {
+                        "name": "8080-tcp",
+                        "protocol": "TCP",
+                        "port": 8080,
+                        "targetPort": 8080
+                    }
+                ],
+                "selector": {
+                    "app": "docker-build-diag",
+                    "deploymentconfig": "docker-build-diag"
+                },
+                "type": "ClusterIP",
+                "sessionAffinity": "None"
+            },
+            "status": {
+                "loadBalancer": {}
+            }
+        },
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "name": "docker-build-diag-1-build",
+                "creationTimestamp": null,
+                "labels": {
+                    "openshift.io/build.name": "docker-build-diag-1"
+                },
+                "annotations": {
+                    "openshift.io/build.name": "docker-build-diag-1",
+                    "openshift.io/scc": "privileged"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "docker-socket",
+                        "hostPath": {
+                            "path": "/var/run/docker.sock"
+                        }
+                    },
+                    {
+                        "name": "builder-dockercfg-gfviv-push",
+                        "secret": {
+                            "secretName": "builder-dockercfg-gfviv"
+                        }
+                    },
+                    {
+                        "name": "builder-token-80uh6",
+                        "secret": {
+                            "secretName": "builder-token-80uh6"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "docker-build",
+                        "image": "openshift3/ose-docker-builder:v3.2.1.13",
+                        "args": [
+                            "--loglevel=2"
+                        ],
+                        "env": [
+                            {
+                                "name": "BUILD",
+                                "value": "{\"kind\":\"Build\",\"apiVersion\":\"v1\",\"metadata\":{\"name\":\"docker-build-diag-1\",\"namespace\":\"builder-test\",\"selfLink\":\"/oapi/v1/namespaces/builder-test/builds/docker-build-diag-1\",\"uid\":\"5f9e037e-6b58-11e6-b8a4-5254008c28c6\",\"resourceVersion\":\"17467\",\"creationTimestamp\":\"2016-08-26T06:43:18Z\",\"labels\":{\"app\":\"docker-build-diag\",\"buildconfig\":\"docker-build-diag\",\"openshift.io/build-config.name\":\"docker-build-diag\"},\"annotations\":{\"openshift.io/build-config.name\":\"docker-build-diag\",\"openshift.io/build.number\":\"1\"}},\"spec\":{\"serviceAccount\":\"builder\",\"source\":{\"type\":\"Git\",\"git\":{\"uri\":\"https://github.com/appuio/docker-build-diag.git\"},\"secrets\":null},\"strategy\":{\"type\":\"Docker\",\"dockerStrategy\":{\"from\":{\"kind\":\"DockerImage\",\"name\":\"openshift/base-centos7@sha256:7dc18d5ea1ea6ecf7cd8643614b800698b3625f94b5435e77e82757482855943\"}}},\"output\":{\"to\":{\"kind\":\"DockerImage\",\"name\":\"172.30.1.1:5000/builder-test/docker-build-diag:latest\"},\"pushSecret\":{\"name\":\"builder-dockercfg-gfviv\"}},\"resources\":{},\"postCommit\":{}},\"status\":{\"phase\":\"New\",\"outputDockerImageReference\":\"172.30.1.1:5000/builder-test/docker-build-diag:latest\",\"config\":{\"kind\":\"BuildConfig\",\"namespace\":\"builder-test\",\"name\":\"docker-build-diag\"}}}\n"
+                            },
+                            {
+                                "name": "BUILD_LOGLEVEL",
+                                "value": "2"
+                            },
+                            {
+                                "name": "SOURCE_REPOSITORY",
+                                "value": "https://github.com/appuio/docker-build-diag.git"
+                            },
+                            {
+                                "name": "SOURCE_URI",
+                                "value": "https://github.com/appuio/docker-build-diag.git"
+                            },
+                            {
+                                "name": "ORIGIN_VERSION",
+                                "value": "v3.2.1.13-1-gc2a90e1"
+                            },
+                            {
+                                "name": "PUSH_DOCKERCFG_PATH",
+                                "value": "/var/run/secrets/openshift.io/push"
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "docker-socket",
+                                "mountPath": "/var/run/docker.sock"
+                            },
+                            {
+                                "name": "builder-dockercfg-gfviv-push",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/openshift.io/push"
+                            },
+                            {
+                                "name": "builder-token-80uh6",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "IfNotPresent",
+                        "securityContext": {
+                            "privileged": true
+                        }
+                    }
+                ],
+                "restartPolicy": "Never",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "host": "ose3-master.example.com",
+                "serviceAccountName": "builder",
+                "serviceAccount": "builder",
+                "nodeName": "ose3-master.example.com",
+                "securityContext": {},
+                "imagePullSecrets": [
+                    {
+                        "name": "builder-dockercfg-gfviv"
+                    }
+                ]
+            },
+            "status": {
+                "phase": "Pending"
+            }
+        },
+        {
+            "kind": "Pod",
+            "apiVersion": "v1",
+            "metadata": {
+                "generateName": "docker-build-diag-1-",
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "docker-build-diag",
+                    "deployment": "docker-build-diag-1",
+                    "deploymentconfig": "docker-build-diag"
+                },
+                "annotations": {
+                    "kubernetes.io/created-by": "{\"kind\":\"SerializedReference\",\"apiVersion\":\"v1\",\"reference\":{\"kind\":\"ReplicationController\",\"namespace\":\"builder-test\",\"name\":\"docker-build-diag-1\",\"uid\":\"d4d442d9-6b58-11e6-b8a4-5254008c28c6\",\"apiVersion\":\"v1\",\"resourceVersion\":\"17538\"}}\n",
+                    "openshift.io/deployment-config.latest-version": "1",
+                    "openshift.io/deployment-config.name": "docker-build-diag",
+                    "openshift.io/deployment.name": "docker-build-diag-1",
+                    "openshift.io/generated-by": "OpenShiftNewApp",
+                    "openshift.io/scc": "restricted"
+                }
+            },
+            "spec": {
+                "volumes": [
+                    {
+                        "name": "default-token-gafgq",
+                        "secret": {
+                            "secretName": "default-token-gafgq"
+                        }
+                    }
+                ],
+                "containers": [
+                    {
+                        "name": "docker-build-diag",
+                        "image": "172.30.1.1:5000/builder-test/docker-build-diag@sha256:4b76e8096d9aa0871123a6acd7943c1bd818a39583c8c1e0ff2bdc84d3159405",
+                        "ports": [
+                            {
+                                "containerPort": 8080,
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "resources": {},
+                        "volumeMounts": [
+                            {
+                                "name": "default-token-gafgq",
+                                "readOnly": true,
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount"
+                            }
+                        ],
+                        "terminationMessagePath": "/dev/termination-log",
+                        "imagePullPolicy": "Always",
+                        "securityContext": {
+                            "capabilities": {
+                                "drop": [
+                                    "KILL",
+                                    "MKNOD",
+                                    "SETGID",
+                                    "SETUID",
+                                    "SYS_CHROOT"
+                                ]
+                            },
+                            "privileged": false,
+                            "seLinuxOptions": {
+                                "level": "s0:c9,c4"
+                            },
+                            "runAsUser": 1000080000
+                        }
+                    }
+                ],
+                "restartPolicy": "Always",
+                "terminationGracePeriodSeconds": 30,
+                "dnsPolicy": "ClusterFirst",
+                "host": "ose3-master.example.com",
+                "serviceAccountName": "default",
+                "serviceAccount": "default",
+                "nodeName": "ose3-master.example.com",
+                "securityContext": {
+                    "seLinuxOptions": {
+                        "level": "s0:c9,c4"
+                    },
+                    "fsGroup": 1000080000
+                },
+                "imagePullSecrets": [
+                    {
+                        "name": "default-dockercfg-qn94b"
+                    }
+                ]
+            },
+            "status": {
+                "phase": "Pending"
+            }
+        }
+    ]
+}
